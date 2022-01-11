@@ -94,7 +94,7 @@ class Student:
         lbl_search.grid(row=0, column=0, pady=10, padx=20, sticky='w')
 
         combo_search = ttk.Combobox(Detail_Frame,textvariable=self.search_by,width=10, font=('times new roman', 15, 'bold'), state='readonly')
-        combo_search['values'] = ('Roll_no', 'Name', 'Contact')
+        combo_search['values'] = ('roll_no', 'name', 'contact')
         combo_search.grid(row=0, column=1, pady=10, padx=20, sticky='w')
 
         txt_Search = Entry(Detail_Frame,textvariable=self.search_txt, font=('times new roman', 15, 'bold'), bd=5, relief=GROOVE)
@@ -154,6 +154,18 @@ class Student:
                 self.Student_table.insert('',END,values=row)
             con.commit()
         con.close()
+    def search_data(self):
+        con = pymysql.connect(host='localhost', user='root', password='', database='stm')
+        cur = con.cursor()
+
+        cur.execute("select * from students where "+str(self.search_by.get())+" LIKE '%"+str(self.search_txt.get())+"%'")
+        rows=cur.fetchall()
+        if len(rows)!=0:
+            self.Student_table.delete(*self.Student_table.get_children())
+            for row in rows:
+                self.Student_table.insert('',END,values=row)
+            con.commit()
+        con.close()
     def clear(self):
         self.Roll_No_var.set("")
         self.name_var.set("")
@@ -198,18 +210,7 @@ class Student:
         self.fetch_data()
         self.clear()
 
-    def search_data(self):
-        con = pymysql.connect(host='localhost', user='root', password='', database='stm')
-        cur = con.cursor()
 
-        cur.execute("select * from students where"+str(self.search_by.get())+"LIKE'%"+str(self.search_txt.get())+"%'")
-        rows=cur.fetchall()
-        if len(rows)!=0:
-            self.Student_table.delete(*self.Student_table.get_children())
-            for row in rows:
-                self.Student_table.insert('',END,values=row)
-            con.commit()
-        con.close()
 
 
 
