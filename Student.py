@@ -177,7 +177,7 @@ class Student:
     def update_data(self):
         con=pymysql.connect(host='localhost', user='root', password='', database='stm')
         cur=con.cursor()
-        cur.execute("update students set name=%s,email%s,gender=%s,contach=%s,dob=%s,address=%s where roll_no=%s",(
+        cur.execute("update students set name=%s,email=%s,gender=%s,contact=%s,dob=%s,address=%s where roll_no=%s",(
                                                                          self.name_var.get(),
                                                                          self.email_var.get(),
                                                                          self.gender_var.get(),
